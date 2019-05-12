@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 .idea/
+config/Database.py
 migrations/
 lib/
 lib64/
