@@ -19,11 +19,14 @@ Make sure you have installed Python 3 on your device
   |    |    |--- Database.py
   |    |--- controller/
   |    |    |--- __init__.py
-  |    |    |--- controller.py
+  |    |    |--- CollegerController.py
+  |    |    |--- CoursesController.py
+  |    |    |--- Main.py
+  |    |    |--- TakeCourseController.py
   |    |--- model/
-  |    |    |--- Colleger.py
-  |    |    |--- Courses.py
-  |    |    |--- TakeCourse.py
+  |    |    |--- CollegerModel.py
+  |    |    |--- CoursesModel.py
+  |    |    |--- TakeCourseModel.py
   |    |--- templates/
   |    |--- __init__.py
   |--- run.py
@@ -47,7 +50,18 @@ virtualenv venv
 ```
 pip install flask flask-sqlalchemy flask-migrate mysql-connector-python
 ```
-4. Create `project_name/run.py` directory inside flask-project according the above structure
+4. Install MySQL database if you don't have, but if you have MySQL you can skip this step
+5. Create user and grant privilege for user was created
+```mysql
+mysql> CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+mysql> GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+mysql> FLUSH PRIVILEGES;
+```
+6. Create database on MySQL
+```mysql
+mysql> CREATE DATABASE YOUR_DATABASE_NAME
+```
+7. Create `project_name/run.py` directory inside flask-project according the above structure
 ```python
 from app import app
 
@@ -55,7 +69,7 @@ from app import app
 if __name__ == "__main__":
     app.run(host="localhost", port=5000, debug=True)
 ```
-5. Create `project_name/app/config/Database.py` to create configuration for database
+8. Create `project_name/app/config/Database.py` to create configuration for database
 ```python
 class DbConfig:
     def __init__(self):
@@ -70,7 +84,7 @@ class DbConfig:
                                                               self.DB_PORT, self.DB_NAME)
 
 ```
-6. Create `project_name/app/__init__.py` inside app directory according the above structure `project_name/app/`. This step will setup for SQLAlchemy config.
+9. Create `project_name/app/__init__.py` inside app directory according the above structure `project_name/app/`. This step will setup for SQLAlchemy config.
 ```python
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -85,26 +99,22 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 ```
-7. Define model to application and create database migration, you should create `project_name/app/model/Colleger.py`
+10. Define colleger model to application and create database migration, create python file on `app/model/` you can see defined model on [here](https://github.com/piinalpin/flask-mysql/tree/master/app/model)
+11. Update `app/__init__.py` should like as follows
 ```python
-from app import db
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from app.config.Database import DbConfig
 
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = DbConfig().getUri()
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
 
-class Colleger(db.Model):
-    __tablename__ = "colleger"
+from app.model import CoursesModel, CollegerModel, TakeCourseModel
 
-    id = db.Column(db.Integer, unique=True, primary_key=True, nullable=False)
-    identity_number = db.Column(db.String(255), nullable=False)
-    name = db.Column(db.String(255), nullable=False)
-    take_courses = db.relationship("take_courses", backref="colleger", lazy="dynamic")
-
-    def __init__(self, identityNumber, name):
-        self.identity_number = identityNumber
-        self.name = name
-
-    def __repr__(self):
-        return "<Name: {}>".format(self.name)
-
+migrate = Migrate(app, db)
 ```
 12. Run migration with flask-migrate, type in terminal as below
 ```
@@ -113,16 +123,32 @@ flask db migrate
 flask db upgrade
 ```
 13. The structure of database should like as follows
+![Sample Database](https://raw.githubusercontent.com/piinalpin/flask-mysql/master/docs/dbdiagram.png)
 
-Mahasiswa  |
-------------- |
-`id (Integer, PK, Autoincrement, NOT NULL)`  |
-`name (String, NOT NULL)`  |
-`nim (String, NOT NULL)`  |
+14. Create controller to application, create python file on `app/controller/` you can see defined controller [here](https://github.com/piinalpin/flask-mysql/tree/master/app/controller)
+15. Update `app/__init__.py` add this import into end line of file, this step to import the controller
+```python
+from app.controller.Main import *
+from app.controller.CollegerController import *
+from app.controller.CoursesController import *
+from app.controller.TakeCourseController import *
+```
+16. Create templates to application on `app/templates/` you can see defined templates [here](https://github.com/piinalpin/flask-mysql/tree/master/app/templates)
+17. Then, you can run this application by terminal
+```
+python run.py
+```
+18. Homepage
+![Sample Homepage](https://raw.githubusercontent.com/piinalpin/flask-mysql/master/docs/homepage.png)
 
+19. Colleger Page
+![Sample Colleger](https://raw.githubusercontent.com/piinalpin/flask-mysql/master/docs/colleger.png)
 
-### Want to demo online?
-#### [Backend Flask REST API](https://flask-rest-api-maverick.herokuapp.com/)
+20. Courses Page
+![Sample Courses](https://raw.githubusercontent.com/piinalpin/flask-mysql/master/docs/courses.png)
+
+21. Take Course Page
+![Sample Take Course](https://raw.githubusercontent.com/piinalpin/flask-mysql/master/docs/take_courses.png)
 
 ## Built With
 
@@ -132,14 +158,16 @@ Mahasiswa  |
 * [Virtualenv](https://virtualenv.pypa.io/en/latest/) - The virtual environment used
 * [SQL Alchemy](https://www.sqlalchemy.org/) - The database library
 * [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) - Flask and SQL Alchemy connector
+* [MySQL Connector Python](https://pypi.org/project/mysql-connector-python/) - Connector MySQL for Python
+* [MySQL](https://www.mysql.com/) - MySQL Database
 
 ## Clone or Download
 
 You can clone or download this project
 ```
-> Clone : git clone https://github.com/piinalpin/flask-rest-api.git
+> Clone : git clone https://github.com/piinalpin/flask-mysql.git
 ```
 
 ## Authors
 
-* **Alvinditya Saputra** - *Initial work* - [DSS Consulting](https://dssconsulting.id/) - [LinkedIn](https://linkedin.com/in/piinalpin) [Instagram](https://www.instagram.com/piinalpin) [Twitter](https://www.twitter.com/piinalpin)
+* **Alvinditya Saputra** - [LinkedIn](https://linkedin.com/in/piinalpin) [Instagram](https://www.instagram.com/piinalpin) [Twitter](https://www.twitter.com/piinalpin)
