@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Crud MySQL</title>
+</head>
+<body>
+<h3>Form Take Course</h3>
+<form action="/take-courses" method="POST">
+    <table>
+        <tr>
+            <td>Colleger Name</td>
+            <td>:</td>
+            <td>
+                <select name="collegerId">
+                    {% for colleger in collegers %}
+                    <option value="{{ colleger.id }}">{{ colleger.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Course</td>
+            <td>:</td>
+            <td>
+                <select name="coursesId">
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><button type="submit">Save</button></td>
+        </tr>
+    </table>
+</form>
+
+<h3>Courses Data</h3>
+<b style="color:red;">{{ message }}</b>
+<table border="1">
+    <tr>
+        <th>No</th>
+        <th>Colleger</th>
+        <th>Course</th>
+        <th>Value</th>
+        <th>Action</th>
+    </tr>
+    {% for no, x in data %}
+        <tr>
+            <td>{{ no }}</td>
+            <td>{{ x.colleger.name }}</td>
+            <td>{{ x.courses.name }}</td>
+            <td>{{ x.value }}</td>
+            <td><a href="take-courses/{{ x.id }}/add-value">Update Value</a> | <a href="take-courses/{{ x.id }}/delete">Delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

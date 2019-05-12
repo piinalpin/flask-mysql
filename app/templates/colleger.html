@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Crud MySQL</title>
+</head>
+<body>
+<h3>Form Add Colleger</h3>
+<form action="/colleger" method="POST">
+    <table>
+        <tr>
+            <td>Identity Number</td>
+            <td>:</td>
+            <td><input type="text" name="identityNumber"></td>
+        </tr>
+        <tr>
+            <td>Full Name</td>
+            <td>:</td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Save</button></td>
+        </tr>
+    </table>
+</form>
+
+<h3>Collegers Data</h3>
+<table border="1">
+    <tr>
+        <th>No</th>
+        <th>Identity Number</th>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+    {% for no, x in data %}
+        <tr>
+            <td>{{ no }}</td>
+            <td>{{ x.identity_number }}</td>
+            <td>{{ x.name }}</td>
+            <td><a href="colleger/{{ x.id }}/edit">Edit</a> | <a href="colleger/{{ x.id }}/delete">Delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

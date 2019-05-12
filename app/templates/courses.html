@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Crud MySQL</title>
+</head>
+<body>
+<h3>Form Add Courses</h3>
+<form action="/courses" method="POST">
+    <table>
+        <tr>
+            <td>Courses Name</td>
+            <td>:</td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td>SKS</td>
+            <td>:</td>
+            <td><input type="text" name="sks"></td>
+        </tr>
+        <tr>
+            <td>Semester</td>
+            <td>:</td>
+            <td><input type="text" name="semester"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Save</button></td>
+        </tr>
+    </table>
+</form>
+
+<h3>Courses Data</h3>
+<table border="1">
+    <tr>
+        <th>No</th>
+        <th>Courses Name</th>
+        <th>SKS</th>
+        <th>Semester</th>
+        <th>Action</th>
+    </tr>
+    {% for no, x in data %}
+        <tr>
+            <td>{{ no }}</td>
+            <td>{{ x.name }}</td>
+            <td>{{ x.sks }}</td>
+            <td>{{ x.semester }}</td>
+            <td><a href="courses/{{ x.id }}/edit">Edit</a> | <a href="courses/{{ x.id }}/delete">Delete</a></td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

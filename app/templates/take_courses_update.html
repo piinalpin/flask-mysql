@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Crud MySQL</title>
+</head>
+<body>
+<h3>Form Update Value</h3>
+<form action="/take-courses/{{ data.id }}/add-value" method="POST">
+    <table>
+        <tr>
+            <td>Colleger</td>
+            <td>:</td>
+            <td><input type="text" value="{{ data.colleger.name }}" readonly></td>
+        </tr>
+        <tr>
+            <td>Courses</td>
+            <td>:</td>
+            <td><input type="text" value="{{ data.courses.name }}" readonly></td>
+        </tr>
+        <tr>
+            <td>Value</td>
+            <td>:</td>
+            <td><input type="text" name="value"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Update</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
