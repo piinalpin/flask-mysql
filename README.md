@@ -138,8 +138,8 @@ from app.controller.TakeCourseController import *
 ```
 python run.py
 ```
-
 18. Homepage
+
 ![Sample Homepage](https://raw.githubusercontent.com/piinalpin/flask-mysql/master/docs/homepage.png)
 
 19. Colleger Page
